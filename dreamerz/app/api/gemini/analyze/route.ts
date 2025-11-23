@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeDream } from "./analyzeservice";
+import {getTitle} from "./titleservice";
 
 export async function POST(req: NextRequest) {
   let requestBody;
@@ -16,7 +17,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const keywords = await analyzeDream(prompt);
-    return NextResponse.json({ keywords }, { status: 200 });
+    const title = await getTitle(prompt);
+    return NextResponse.json({ keywords, title }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ message: err.message || "Internal server error" }, { status: 500 });
   }
