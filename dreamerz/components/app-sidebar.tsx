@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Upload, Mail } from 'lucide-react';
+import { House, Upload, Mail } from 'lucide-react';
 
 import { NavProjects } from '@/components/nav-projects';
 import { NavUser } from '@/components/nav-user';
@@ -22,6 +22,11 @@ const data = {
     avatar: '/avatars/shadcn.jpg',
   },
   tabs: [
+    {
+      name: 'Home',
+      url: '/dashboard',
+      icon: House,
+    },
     {
       name: 'Upload',
       url: '#',
