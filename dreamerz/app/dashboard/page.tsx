@@ -10,7 +10,6 @@ export default function Page() {
         <AppSidebar />
         <SidebarInset></SidebarInset>
       </SidebarProvider>
-
       <DreamGlobe />
     </div>
   );
