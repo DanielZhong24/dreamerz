@@ -4,30 +4,25 @@ import Globe from 'react-globe.gl';
 import { smallGlobeData } from '@/app/_mock/pointsData';
 import { useEffect, useState } from 'react';
 
-import FloatWindow from './float-window';
+import PointHoverWindow from './point-hover-window';
+import PointPopupWindow from './point-popup-window';
 
-interface PointData {
-  id: number
-  name: string
-  desc: string
-  image: string
-  image_alt: string
-  video: string
-  lat: number
-  lng: number
-}
+import type { PointData } from '@/types/point-data';
 
 export default function DreamGlobe() {
   const [points, setPoints] = useState<PointData[]>([]);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [hovered, setHovered] = useState<PointData | null>(null);
+  const [clicked, setClicked] = useState<PointData | null>(null);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     setMousePos({ x: event.clientX, y: event.clientY });
   };
 
   function onPointClick(point: PointData) {
-    console.log(point.name);
+    setClicked(point);
+    // Clear hover when a point is clicked so the hover window hides
+    setHovered(null);
   }
 
   function onPointHover(point: PointData | null) {
@@ -54,7 +49,10 @@ export default function DreamGlobe() {
         onPointHover={(point) => onPointHover(point as PointData | null)}
       />
       {hovered && (
-        <FloatWindow mousePos={mousePos} hovered={hovered} />
+        <PointHoverWindow mousePos={mousePos} hovered={hovered} />
+      )}
+      {clicked && (
+        <PointPopupWindow point={clicked} onClose={() => setClicked(null)} />
       )}
     </div>
   );
