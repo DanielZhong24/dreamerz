@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Upload, Mail } from 'lucide-react';
+import { House, Upload, Mail, AudioLines } from 'lucide-react';
 
 import { NavProjects } from '@/components/nav-projects';
 import { NavUser } from '@/components/nav-user';
@@ -23,9 +23,19 @@ const data = {
   },
   tabs: [
     {
-      name: 'Upload',
+      name: 'Home',
+      url: '/dashboard',
+      icon: House,
+    },
+    {
+      name: 'Text Upload',
       url: '#',
       icon: Upload,
+    },
+    {
+      name: 'Voice Upload',
+      url: '#',
+      icon: AudioLines,
     },
     {
       name: 'Direct Messages',
