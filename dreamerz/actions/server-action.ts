@@ -3,8 +3,8 @@ import { actionClient } from "./safe-action";
 import { formSchema } from "../lib/form-schema";
 import { generateDreamName } from "@/app/api/gemini/name/nameservice";
 import { analyzeDream } from "@/app/api/gemini/analyze/analyzeservice";
-import { generateDreamImage } from "@/app/api/gemini/image/route";
-import { generateDreamVideo } from "@/app/api/gemini/video/route";
+import { generateDreamImage } from "@/app/api/gemini/image/imageservice";
+import { generateDreamVideo } from "@/app/api/gemini/video/videoservice";
 import { createClient } from "@/lib/supabase/server";
 import { uploadDream } from "@/app/api/backend/dreams/uploaddream";
 
