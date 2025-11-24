@@ -41,7 +41,7 @@ export default function DreamGlobe() {
     <div className="w-screen h-screen" onMouseMove={handleMouseMove}>
       <Globe
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-        backgroundColor="#202020"
+        backgroundColor="#000000"
         animateIn={true}
         pointsData={points}
         pointLabel={""}
