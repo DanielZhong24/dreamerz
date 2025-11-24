@@ -22,10 +22,14 @@ export async function getLocationFromCoordinates(
     Only return the location string, nothing else.
   `;
 
+  console.log(`Fetching location for lat: ${latitude}, lng: ${longitude}`);
+
   const aiResponse = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: prompt,
   });
+
+  console.log("Gemini Location Response:", aiResponse);
 
   const rawText = aiResponse.text;
   if (!rawText) {

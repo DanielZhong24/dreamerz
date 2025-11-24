@@ -1,50 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { House, Upload, Mail, AudioLines } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  tabs: [
-    {
-      name: "Home",
-      url: "/dashboard",
-      icon: House,
-    },
-    {
-      name: "Text Upload",
-      url: "#",
-      icon: Upload,
-    },
-    {
-      name: "Voice Upload",
-      url: "#",
-      icon: AudioLines,
-    },
-    {
-      name: "Direct Messages",
-      url: "#",
-      icon: Mail,
-    },
-  ],
-};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [user, setUser] = React.useState({
@@ -74,17 +39,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }, []);
 
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar
+      variant="inset"
+      className="bg-transparent [&>[data-slot=sidebar-inner]]:bg-transparent border-none"
+      {...props}
+    >
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild></SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <div className="px-4 py-6">
+          <h1 className="text-2xl font-bold text-white">Dreamerz</h1>
+          <p className="text-sm text-zinc-400 mt-1">
+            Explore the collective unconscious.
+            <br />
+            Connect with dreamers worldwide.
+          </p>
+        </div>
       </SidebarHeader>
-      <SidebarContent>
-        <NavProjects tabs={data.tabs} />
-      </SidebarContent>
+      <SidebarContent></SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>

@@ -6,7 +6,9 @@ const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 export async function analyzeDream(dreamDescription: string) {
   if (!GEMINI_API_KEY) {
-    throw new Error("Server configuration error: GEMINI_KEY environment variable is not set.");
+    throw new Error(
+      "Server configuration error: GEMINI_KEY environment variable is not set."
+    );
   }
 
   // 1️⃣ Fetch all predefined keywords (with id and name)
@@ -26,28 +28,42 @@ Analyze the following dream and select 5 keywords that best describe it.
 `;
 
   // 3️⃣ Call Gemini AI
+  console.log("Sending prompt to Gemini...");
   const aiResponse = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: finalPrompt,
   });
 
   const rawText = aiResponse.text;
+  console.log("Gemini response:", rawText);
+
   if (!rawText) {
     throw new Error("AI response was empty");
   }
 
   const cleaned = rawText.replace(/```json\s*|\s*```/g, "").trim();
-  const selectedKeywords = JSON.parse(cleaned);
+  let selectedKeywords;
+  try {
+    selectedKeywords = JSON.parse(cleaned);
+  } catch (e) {
+    console.error("Failed to parse JSON from Gemini:", cleaned);
+    throw new Error("AI returned invalid JSON");
+  }
 
   if (!Array.isArray(selectedKeywords)) {
     throw new Error("AI returned invalid format (not an array)");
   }
 
   // 4️⃣ Map AI-selected keywords to their database IDs
-  const keywordMap = new Map(predefinedKeywords.map(k => [k.name.toLowerCase(), k.id]));
+  const keywordMap = new Map(
+    predefinedKeywords.map((k) => [k.name.toLowerCase(), k.id])
+  );
   const validKeywordIds = selectedKeywords
     .map((kw: string) => keywordMap.get(kw.toLowerCase()))
     .filter((id: number | undefined): id is number => id !== undefined);
+
+  console.log("Selected keywords:", selectedKeywords);
+  console.log("Mapped keyword IDs:", validKeywordIds);
 
   return validKeywordIds; // ✅ Return IDs instead of names
 }

@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import { AppSidebar } from '@/components/app-sidebar';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import dynamic from 'next/dynamic';
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import dynamic from "next/dynamic";
 
-const DreamGlobe = dynamic(() => import('@/components/dream-globe'), {
+const DreamGlobe = dynamic(() => import("@/components/dream-globe"), {
   ssr: false,
 });
-const UploadDream = dynamic(() => import('@/components/upload-dream'), {
-  ssr: false,
-});
+const UploadDream = dynamic(
+  () => import("@/components/upload-dream").then((mod) => mod.DreamForm),
+  {
+    ssr: false,
+  }
+);
 
 export default function Page() {
   return (
