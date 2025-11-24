@@ -1,7 +1,15 @@
-import { AppSidebar } from '@/components/app-sidebar';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import DreamGlobe from '@/components/dream-globe';
-import VoiceForm from '@/components/VoiceForm';
+"use client";
+
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import dynamic from "next/dynamic";
+
+const DreamGlobe = dynamic(() => import("@/components/dream-globe"), {
+  ssr: false,
+});
+const VoiceForm = dynamic(() => import("@/components/VoiceForm"), {
+  ssr: false,
+});
 
 export default function Page() {
   return (
