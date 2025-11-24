@@ -7,7 +7,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useAction } from 'next-safe-action/hooks';
 import { motion } from 'motion/react';
 import { Check, MapPin, Loader2, Upload, Mic } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Field,
   FieldGroup,
@@ -63,6 +63,7 @@ export default function DreamForm() {
   });
 
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [description, setDescription] = useState<string>('');
 
   const handleGetLocation = () => {
     setIsLoadingLocation(true);
@@ -134,6 +135,12 @@ export default function DreamForm() {
     }
   };
 
+  useEffect(() => {
+    if (listening) {
+      setDescription(transcript);
+    }
+  }, [listening, transcript]);
+
   const { isExecuting, hasSucceeded } = formAction;
   if (hasSucceeded) {
     return (
@@ -192,7 +199,8 @@ export default function DreamForm() {
                       {...field}
                       aria-invalid={fieldState.invalid}
                       id="description"
-                      value={transcript}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
                       placeholder="Enter your text"
                     />
                     {browserSupportsSpeechRecognition && (
@@ -202,7 +210,7 @@ export default function DreamForm() {
                         className="rounded-full size-8 absolute bottom-2 right-2 "
                         onClick={toggleRecord}>
                         <Mic
-                          className={`size-5 ${
+                          className={`size-4 ${
                             listening ? 'animate-pulse' : ''
                           }`}
                         />
