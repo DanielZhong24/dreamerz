@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { useAction } from 'next-safe-action/hooks';
 import { motion } from 'motion/react';
-import { Check, MapPin, Loader2, Upload } from 'lucide-react';
+import { Check, MapPin, Loader2, Upload, Mic } from 'lucide-react';
 import { useState } from 'react';
 import {
   Field,
@@ -45,6 +45,10 @@ import {
   DialogTitle,
   DialogFooter,
 } from './ui/dialog';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
+
 type Schema = z.infer<typeof formSchema>;
 
 export default function DreamForm() {
@@ -114,6 +118,22 @@ export default function DreamForm() {
     formAction.execute(data);
   });
 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  const toggleRecord = () => {
+    if (listening) {
+      SpeechRecognition.stopListening();
+    } else {
+      resetTranscript();
+      SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
+    }
+  };
+
   const { isExecuting, hasSucceeded } = formAction;
   if (hasSucceeded) {
     return (
@@ -167,18 +187,35 @@ export default function DreamForm() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid} className="gap-1">
                   <FieldLabel htmlFor="description">Description *</FieldLabel>
-                  <Textarea
-                    {...field}
-                    aria-invalid={fieldState.invalid}
-                    id="description"
-                    placeholder="Enter your text"
-                  />
+                  <div className="relative">
+                    <Textarea
+                      {...field}
+                      aria-invalid={fieldState.invalid}
+                      id="description"
+                      value={transcript}
+                      placeholder="Enter your text"
+                    />
+                    {browserSupportsSpeechRecognition && (
+                      <Button
+                        type="button"
+                        variant={listening ? 'destructive' : 'default'}
+                        className="rounded-full size-8 absolute bottom-2 right-2 "
+                        onClick={toggleRecord}>
+                        <Mic
+                          className={`size-5 ${
+                            listening ? 'animate-pulse' : ''
+                          }`}
+                        />
+                      </Button>
+                    )}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </div>
+
                   <FieldDescription>
-                    Describe your dream as best as you can
+                    Describe your dream as best as you can or you can say it.
                   </FieldDescription>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
                 </Field>
               )}
             />
