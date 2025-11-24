@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 const DreamGlobe = dynamic(() => import('@/components/dream-globe'), {
   ssr: false,
 });
-const VoiceForm = dynamic(() => import("@/components/voice-form"), {
+const UploadDream = dynamic(() => import('@/components/upload-dream'), {
   ssr: false,
 });
 
@@ -21,7 +21,6 @@ export default function Page() {
       <DreamGlobe />
       <div className="fixed flex bottom-8 left-1/2 transform -translate-x-1/2  space-x-4 z-50">
         <UploadDream />
-        <VoiceForm />
       </div>
     </div>
   );
