@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 const DreamGlobe = dynamic(() => import("@/components/dream-globe"), {
   ssr: false,
 });
-const VoiceForm = dynamic(() => import("@/components/VoiceForm"), {
+const VoiceForm = dynamic(() => import("@/components/voice-form"), {
   ssr: false,
 });
 
